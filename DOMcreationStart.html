@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>DOM Creation</title>
+<script type="text/javascript">
+//<![CDATA[
+	//some possible methods/props you will use! (know them!)
+	//createElement, setAttribute, appendChild, replaceChild, createTextNode, childNodes[], firstChild, 
+	//nodeType, nodeName, nodeValue, getElementById, getElementsByTagName
+	function createText(){
+		var ele = document.createElement('h1');
+		ele.setAttribute('id', 'jim');
+		ele.setAttribute('style', 'color:orange');
+		var text = document.createTextNode('look ma, no hands');
+		ele.appendChild(text);
+
+		document.getElementsByTagName('body')[0].appendChild(ele);
+
+		var imgEle = document.createElement('img');
+		imgEle.setAttribute('src', 'california.jpg');
+		document.getElementsByTagName('body')[0].appendChild(imgEle);
+		
+		var radEle = document.createElement('input');
+		radEle.setAttribute('type', 'radio');
+		radEle.setAttribute('name', 'test');
+
+		document.getElementsByTagName('body')[0].appendChild(radEle);
+	}
+	
+	
+//]]>
+</script>
+</head>
+<body>
+<div id="buttons" style="position:absolute; top:8px; left:200px">
+  <button onclick="createText();">Create It!</button>
+</div>
+<body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
