@@ -47,8 +47,8 @@ function build(value){
     //this is the initial pass through the form. Create the form, set the name, stick it on the page
     else{
         dest = destinations['init'];
-        var main = document.createElement('div');
-        main.setAttribute('class', 'main');
+        //var main = document.createElement('div');
+        //main.setAttribute('class', 'main');
 
         var form = document.createElement('form');
         
@@ -94,12 +94,25 @@ function build(value){
     if(typeof(dest) !== 'undefined'){
         
         var select = document.createElement('select');
-        select.setAttribute('onchange', 'build(this)');
+        
+        if(ieSeven){
+            select.setAttribute('onchange', function(){
+                build(this);
+            });
+        }
+        else{
+            select.setAttribute('onchange', 'build(this)');
+        }
+        
 
         for (var i = 0; i < dest.length; i++) {
             var option = document.createElement("option");
+            
+            //var option = new Option(dest[i], dest[i]);
+            
             option.value = dest[i];
-            option.text = dest[i];
+            //option.text = dest[i];
+            option.innerHTML = dest[i];
             if(option.value == 'Choose a Destination!' || option.value == 'Choose Country' || option.value == 'Choose Resort'){
                 option.disabled = true;
                 option.selected = 'selected';
@@ -108,7 +121,7 @@ function build(value){
         }
         document.getElementsByTagName('form')[0].appendChild(select);
         
-        //show images as you click through
+        //show images as you click through --NOT WORKING IN IE
         var img = document.createElement('img');
         img.setAttribute('src', 'images/destinationimages/'+ value.value + 'small.jpg');
         img.setAttribute('alt', value.value);
