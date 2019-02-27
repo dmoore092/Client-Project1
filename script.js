@@ -139,8 +139,13 @@ function build(value){
 
         var formName   = document.createElement('input');
         var nameLabel  = document.createElement('label');
+        
         var formEmail  = document.createElement('input');
         var emailLabel = document.createElement('label');
+        
+        var submit = document.createElement('input');
+        submit.setAttribute('type', 'submit');
+        submit.setAttribute('value', 'Save my info!');
 
         document.getElementsByTagName('body')[0].appendChild(infoForm);
 
@@ -149,10 +154,14 @@ function build(value){
 
             document.getElementsByTagName('form')[1].appendChild(emailLabel);
             document.getElementsByTagName('form')[1].appendChild(formEmail);
+
+            document.getElementsByTagName('form')[1].appendChild(submit);
         
 
-        document.getElementsByTagName('label')[0].textContent='Enter your name!';
-        document.getElementsByTagName('label')[1].textContent='Enter your email address!';
+        //document.getElementsByTagName('label')[0].textContent='Enter your name!';
+        //document.getElementsByTagName('label')[1].textContent='Enter your email address!';
+        document.getElementsByTagName('label')[0].innerHTML='Enter your name!';
+        document.getElementsByTagName('label')[1].innerHTML='Enter your email address!';
         
         console.log(value.value);
         //createImage(value);
