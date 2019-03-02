@@ -13,16 +13,17 @@ body{
     text-align: center;
     display: flex;
 }
-select{
+select, input{
     width: 100%;
     height: 35px;
     font-size: 1.2rem;
     border-radius: .1;
+    margin-bottom: 10px;
 }
-option{
+option, label{
     font-size: 1.5rem;
 }
-form{
+form, #main{
     padding: 25px;
     width: 40%;
     margin: auto;

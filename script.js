@@ -2,170 +2,218 @@
 
 function build(value){
 
-    var dest;
-    var destinations = new Object();
-    var imgs = new Object();
-    //data
-    destinations['init'] = ['Choose a Destination!', 'Mainland', 'Island'];
-        destinations['Mainland'] = ['Choose Country', 'Mexico', 'Costa Rica', 'Belize', 'Panama'];
-            destinations['Mexico'] = ['Choose Resort', 'Hard Rock Hotel, Cancun', 'Mexican Resort 2'];
-            destinations['Costa Rica'] = ['Choose Resort','Costa Rican Resort 1', 'Costa Rican Resort 2'];
-            destinations['Belize'] = ['Choose Resort','Belizian Resort 1', 'Belizian Resort 2'];
-            destinations['Panama'] = ['Choose Resort','Panamanian', 'Panamanian Resort 2'];
-        destinations['Island'] = ['Choose Country', 'Dominican Republic', 'Puerto Rico', 'Cuba', 'Jamaica', 'Haiti', 'Barbados', 'Aruba', 'Cayman Islands'];
-            destinations['Dominican Republic'] = ['Choose Resort', 'Dominican Resort 1', 'Dominican Resort 2'];
-            destinations['Puerto Rico'] = ['Choose Resort', 'Puerto Rican Resort 1', 'Puerto Rican Resort 2'];
-            destinations['Cuba'] = ['Choose Resort', 'Cuban Resort 1', 'Cuban Resort 2'];
-            destinations['Jamaica'] = ['Choose Resort', 'Jamacian Resort 1', 'Jamaican Resort 2'];
-            destinations['Haiti'] = ['Choose Resort', 'Hatian Resort 1', 'Hatian Resort 2'];
-            destinations['Barbados'] = ['Choose Resort', 'Barbadosian Resort 1', 'Barbadosian Resort 2'];
-            destinations['Aruba'] = ['Choose Resort', 'Aruban Resort 1', 'Aruban Resort 2'];
-            destinations['Cayman Islands'] = ['Choose Resort', 'Cayman Resort 1', 'Cayman Resort 2'];
-    backgroundImgs = ['images/backgroundimages/1.jpg','images/backgroundimages/2.jpg','images/backgroundimages/3.jpg','images/backgroundimages/4.jpg','images/backgroundimages/5.jpg','images/backgroundimages/6.jpg',
-                    'images/backgroundimages/7.jpg','images/backgroundimages/8.jpg','images/backgroundimages/9.jpg','images/backgroundimages/16.jpg','images/backgroundimages/11.jpg','images/backgroundimages/12.jpg',
-                    'images/backgroundimages/13.jpg','images/backgroundimages/14.jpg','images/backgroundimages/15.jpg','images/backgroundimages/10.jpg','images/backgroundimages/17.jpg','images/backgroundimages/18.jpg',
-                    'images/backgroundimages/19.jpg','images/backgroundimages/20.jpg','images/backgroundimages/21.jpg','images/backgroundimages/22.jpg','images/backgroundimages/23.jpg','images/backgroundimages/24.jpg',
-                    'images/backgroundimages/25.jpg','images/backgroundimages/26.jpg','images/backgroundimages/27.jpg','images/backgroundimages/28.jpg','images/backgroundimages/29.jpg','images/backgroundimages/30.jpg',
-                    'images/backgroundimages/31.jpg','images/backgroundimages/32.jpg','images/backgroundimages/33.jpg','images/backgroundimages/34.jpg','images/backgroundimages/35.jpg','images/backgroundimages/36.jpg',
-                    'images/backgroundimages/37.jpg','images/backgroundimages/38.jpg','images/backgroundimages/39.jpg','images/backgroundimages/40.jpg'];
-    //reverse for better pics on top layers
-    backgroundImgsRev = backgroundImgs.reverse();
-    
-    //checks if value is set(passed in). If set, we're on the second select menu, so grab new info and keep going
-    if(value){
-        dest = destinations[value.value];
-        
-        while(value!== value.parentNode.lastChild){
-            value.parentNode.removeChild(value.parentNode.lastChild);
+    if(localStorage.getItem('name')){
+        //user has already been here
+        console.log('i see you');
+        var page = document.createElement('div');
+        page.setAttribute('id', 'main');
 
-            if(document.getElementById('details')){
-                var contact = document.getElementById('details');
-                contact.parentNode.removeChild(contact);
+        var welcomeName = document.createElement('p');
+        var welcomeEmail = document.createElement('p');
+        var welcomeDest = document.createElement('p');
+        welcomeName.appendChild(document.createTextNode('Welcome back '+localStorage.getItem('name')+'!'));
+        welcomeEmail.appendChild(document.createTextNode('We have your email as '+localStorage.getItem('email')+'. This is the address we will email your choice, assuming you still want to go to '+localStorage.getItem('destination')+'!'));
+        page.appendChild(welcomeName);
+        page.appendChild(welcomeEmail);
+        document.getElementsByTagName('body')[0].appendChild(page);
+
+        var picForm = document.createElement('form');
+        var clearMyStuff = document.createElement('input');
+        clearMyStuff.setAttribute('type', 'submit');
+        clearMyStuff.setAttribute('value', 'I change my mind!');
+        var keepMyStuff = document.createElement('input');
+        keepMyStuff.setAttribute('type', 'submit');
+        keepMyStuff.setAttribute('value', 'That is correct, send me another email please.');
+        document.getElementsByTagName('body')[0].appendChild(picForm);
+        picForm.appendChild(clearMyStuff);
+        picForm.appendChild(keepMyStuff);
+        showResortImage(localStorage.getItem('destination'));
+        //document.getElementsByTagName('body')[0].style.backgroundColor=localStorage.getItem('color');
+    }
+    //first time to the site, main section of code
+    else{
+        var dest;
+        var destinations = new Object();
+        var imgs = new Object();
+        //data
+        destinations['init'] = ['Choose a Destination!', 'Mainland', 'Island'];
+            destinations['Mainland'] = ['Choose Country', 'Mexico', 'Costa Rica', 'Belize', 'Panama'];
+                destinations['Mexico'] = ['Choose Resort', 'Hard Rock Hotel, Cancun', 'Hard Rock Hotel, Xcaret'];
+                destinations['Costa Rica'] = ['Choose Resort','Baldi, Costa Rica', 'Finca Rosa Blanca, Costa Rica'];
+                destinations['Belize'] = ['Choose Resort','Turtle Inn, Belize', 'Cayo Espanto, Belize'];
+                destinations['Panama'] = ['Choose Resort','Isla Secas, Panama', 'El Porvenir, Panama'];
+            destinations['Island'] = ['Choose Country', 'Dominican Republic', 'Puerto Rico', 'Cuba', 'Jamaica', 'Haiti', 'Bahamas', 'Aruba'];
+                destinations['Dominican Republic'] = ['Choose Resort', 'Bayahibe, Dominican Republic', 'Bahia, Dominican Republic'];
+                destinations['Puerto Rico'] = ['Choose Resort', 'La Concha, Puerto Rico', 'El Conquistador, Puerto Rico'];
+                destinations['Cuba'] = ['Choose Resort', 'Sandals, Cuba', 'Casilda, Cuba'];
+                destinations['Jamaica'] = ['Choose Resort', 'Sandals, Jamaica', 'Enchanted Gardens, Jamaica'];
+                destinations['Haiti'] = ['Choose Resort', 'Labadee, Haiti', 'Club Orient, Haiti'];
+                destinations['Bahamas'] = ['Choose Resort', 'Blue Lagoon, Bahamas', 'Atlantis, Bahamas'];
+                destinations['Aruba'] = ['Choose Resort', 'Hotel Tamarjin, Aruba', 'Hotel Riu Palace, Aruba'];
+        backgroundImgs = ['images/backgroundimages/1.jpg','images/backgroundimages/2.jpg','images/backgroundimages/3.jpg','images/backgroundimages/4.jpg','images/backgroundimages/5.jpg','images/backgroundimages/6.jpg',
+                        'images/backgroundimages/7.jpg','images/backgroundimages/8.jpg','images/backgroundimages/9.jpg','images/backgroundimages/16.jpg','images/backgroundimages/11.jpg','images/backgroundimages/12.jpg',
+                        'images/backgroundimages/13.jpg','images/backgroundimages/14.jpg','images/backgroundimages/15.jpg','images/backgroundimages/10.jpg','images/backgroundimages/17.jpg','images/backgroundimages/18.jpg',
+                        'images/backgroundimages/19.jpg','images/backgroundimages/20.jpg','images/backgroundimages/21.jpg','images/backgroundimages/22.jpg','images/backgroundimages/23.jpg','images/backgroundimages/24.jpg',
+                        'images/backgroundimages/25.jpg','images/backgroundimages/26.jpg','images/backgroundimages/27.jpg','images/backgroundimages/28.jpg','images/backgroundimages/29.jpg','images/backgroundimages/30.jpg',
+                        'images/backgroundimages/31.jpg','images/backgroundimages/32.jpg','images/backgroundimages/33.jpg','images/backgroundimages/34.jpg','images/backgroundimages/35.jpg','images/backgroundimages/36.jpg',
+                        'images/backgroundimages/37.jpg','images/backgroundimages/38.jpg','images/backgroundimages/39.jpg','images/backgroundimages/40.jpg'];
+        //reverse for better pics on top layers
+        backgroundImgsRev = backgroundImgs.reverse();
+
+        //checks if value is set(passed in). If set, we're on the second select menu, so grab new info and keep going
+        if(value){
+            dest = destinations[value.value];
+            
+            while(value!== value.parentNode.lastChild){
+                value.parentNode.removeChild(value.parentNode.lastChild);
+
+                if(document.getElementById('details')){
+                    var contact = document.getElementById('details');
+                    contact.parentNode.removeChild(contact);
+                }
             }
         }
-    }
-    //this is the initial pass through the form. Create the form, set the name, stick it on the page
-    else{
-        dest = destinations['init'];
-        //var main = document.createElement('div');
-        //main.setAttribute('class', 'main');
-
-        var form = document.createElement('form');
-        
-        form.setAttribute('name', 'my-form');
-        document.getElementsByTagName('body')[0].appendChild(form);
-
-        var intro = document.createElement('h2');
-        intro.appendChild(document.createTextNode('Add a memory to your collection!'));
-        form.appendChild(intro);
-        
-        //background pictures setup
-        var vPositions = [];
-        var hPositions = [];
-        var rPositions = [];
-        for(var j = 0; j < 41; j++){
-            var vPositions;
-            var vRand = Math.random()*73;
-            var hRand = Math.random()*67;
-            var rRand = Math.floor(Math.random() * 35) - 10;
-            vPositions.push(vRand);
-            hPositions.push(hRand);
-            rPositions.push(rRand);
-        }
-
-        //put background pictures on the page
-        for(var i = 0; i < backgroundImgs.length; i++){
-            var backgroundImg = document.createElement('img');
-            backgroundImg.setAttribute('src', backgroundImgsRev[i]);
-            backgroundImg.setAttribute('alt', 'BackgroundImages');
-            backgroundImg.setAttribute('class', 'backgroundImage');
-            document.getElementsByTagName('body')[0].appendChild(backgroundImg);
-            backgroundImg.style.position='absolute'
-            backgroundImg.style.top=vPositions[i]+'%';
-            backgroundImg.style.left=hPositions[i]+'%';
-            backgroundImg.style.transform='rotate('+rPositions[i]+'deg)';
-            backgroundImg.style.zIndex='-3';
-            backgroundImg.style.border='1px solid black';
-            backgroundImg.style.boxShadow='.5px .5px #333';
-        }
-        
-    }
-    //as long as dest is defined, keep going down the tree
-    if(typeof(dest) !== 'undefined'){
-        
-        var select = document.createElement('select');
-        
-        if(ieSeven){
-            select.setAttribute('onchange', function(){
-                build(this);
-            });
-        }
+        //this is the initial pass through the form. Create the form, set the name, stick it on the page
         else{
-            select.setAttribute('onchange', 'build(this)');
-        }
-        
+            dest = destinations['init'];
+            //var main = document.createElement('div');
+            //main.setAttribute('class', 'main');
 
-        for (var i = 0; i < dest.length; i++) {
-            var option = document.createElement("option");
+            var form = document.createElement('form');
             
-            //var option = new Option(dest[i], dest[i]);
+            form.setAttribute('name', 'my-form');
+            document.getElementsByTagName('body')[0].appendChild(form);
+
+            var intro = document.createElement('h2');
+            intro.appendChild(document.createTextNode('Add a memory to your collection!'));
+            form.appendChild(intro);
             
-            option.value = dest[i];
-            //option.text = dest[i];
-            option.innerHTML = dest[i];
-            if(option.value == 'Choose a Destination!' || option.value == 'Choose Country' || option.value == 'Choose Resort'){
-                option.disabled = true;
-                option.selected = 'selected';
+            //background pictures setup
+            var vPositions = [];
+            var hPositions = [];
+            var rPositions = [];
+            for(var j = 0; j < 41; j++){
+                var vPositions;
+                var vRand = Math.random()*73;
+                var hRand = Math.random()*67;
+                var rRand = Math.floor(Math.random() * 35) - 10;
+                vPositions.push(vRand);
+                hPositions.push(hRand);
+                rPositions.push(rRand);
             }
-            select.appendChild(option);
+
+            //put background pictures on the page
+            for(var i = 0; i < backgroundImgs.length; i++){
+                var backgroundImg = document.createElement('img');
+                backgroundImg.setAttribute('src', backgroundImgsRev[i]);
+                backgroundImg.setAttribute('alt', 'BackgroundImages');
+                backgroundImg.setAttribute('class', 'backgroundImage');
+                document.getElementsByTagName('body')[0].appendChild(backgroundImg);
+                backgroundImg.style.position='absolute'
+                backgroundImg.style.top=vPositions[i]+'%';
+                backgroundImg.style.left=hPositions[i]+'%';
+                backgroundImg.style.transform='rotate('+rPositions[i]+'deg)';
+                backgroundImg.style.zIndex='-3';
+                backgroundImg.style.border='1px solid black';
+                backgroundImg.style.boxShadow='.5px .5px #333';
+            }
+            
         }
-        document.getElementsByTagName('form')[0].appendChild(select);
-        
-        //show images as you click through --NOT WORKING IN IE
-        var img = document.createElement('img');
-        img.setAttribute('src', 'images/destinationimages/'+ value.value + 'small.jpg');
-        img.setAttribute('alt', value.value);
-        img.setAttribute('class', 'image');
-        img.setAttribute('id', value.value);
-        document.getElementsByTagName('form')[0].appendChild(img);
-        showImages(value.value);//shows and animates image
-    }
-    //dest is undefined at the end of the data tree
-    else{
-        //show the contact form at the end of the tree
-        var infoForm = document.createElement('form');
-        infoForm.setAttribute('name', 'user-details');
-        infoForm.setAttribute('id', 'details');
+        //as long as dest is defined, keep going down the tree
+        if(typeof(dest) !== 'undefined'){
+            
+            var select = document.createElement('select');
+            
+            if(ieSeven){
+                select.setAttribute('onchange', function(){
+                    build(this);
+                });
+            }
+            else{
+                select.setAttribute('onchange', 'build(this)');
+            }
+            
 
-        var formName   = document.createElement('input');
-        var nameLabel  = document.createElement('label');
-        
-        var formEmail  = document.createElement('input');
-        var emailLabel = document.createElement('label');
-        
-        var submit = document.createElement('input');
-        submit.setAttribute('type', 'submit');
-        submit.setAttribute('value', 'Save my info!');
+            for (var i = 0; i < dest.length; i++) {
+                var option = document.createElement("option");
+                
+                //var option = new Option(dest[i], dest[i]);
+                
+                option.value = dest[i];
+                //option.text = dest[i];
+                option.innerHTML = dest[i];
+                if(option.value == 'Choose a Destination!' || option.value == 'Choose Country' || option.value == 'Choose Resort'){
+                    option.disabled = true;
+                    option.selected = 'selected';
+                }
+                select.appendChild(option);
+            }
+            document.getElementsByTagName('form')[0].appendChild(select);
+            
+            //show images as you click through --NOT WORKING IN IE
+            var img = document.createElement('img');
+            img.setAttribute('src', 'images/destinationimages/'+ value.value + 'small.jpg');
+            img.setAttribute('alt', value.value);
+            img.setAttribute('class', 'image');
+            img.setAttribute('id', value.value);
+            document.getElementsByTagName('form')[0].appendChild(img);
+            showImages(value.value);//shows and animates image
+        }
+        //dest is undefined at the end of the data tree
+        else{
+            //show the contact form at the end of the tree
+            var infoForm = document.createElement('form');
+            infoForm.setAttribute('name', 'user-details');
+            infoForm.setAttribute('id', 'details');
 
-        document.getElementsByTagName('body')[0].appendChild(infoForm);
+            var formName   = document.createElement('input');
+            var nameLabel  = document.createElement('label');
+            
+            var formEmail  = document.createElement('input');
+            var emailLabel = document.createElement('label');
+            
+            var submit = document.createElement('input');
+            submit.setAttribute('type', 'submit');
+            submit.setAttribute('value', 'Save my info!');
+            submit.onclick = function(event){
+                if(window.localStorage){
+                    event.preventDefault();
+                    localStorage.setItem('name', document.getElementsByTagName('input')[0].value);
+                    localStorage.setItem('email', document.getElementsByTagName('input')[1].value);
+                    localStorage.setItem('destination', value.value);
+                }
+                else{
+                    //do it with cookies
+                }
+                
+            }
 
-            document.getElementsByTagName('form')[1].appendChild(nameLabel);
-            document.getElementsByTagName('form')[1].appendChild(formName);
+            var brake = document.createElement('br');
+            var brake2 = document.createElement('br');
 
-            document.getElementsByTagName('form')[1].appendChild(emailLabel);
-            document.getElementsByTagName('form')[1].appendChild(formEmail);
+            document.getElementsByTagName('body')[0].appendChild(infoForm);
 
-            document.getElementsByTagName('form')[1].appendChild(submit);
-        
+                document.getElementsByTagName('form')[1].appendChild(nameLabel);
+                document.getElementsByTagName('form')[1].appendChild(formName);
 
-        //document.getElementsByTagName('label')[0].textContent='Enter your name!';
-        //document.getElementsByTagName('label')[1].textContent='Enter your email address!';
-        document.getElementsByTagName('label')[0].innerHTML='Enter your name!';
-        document.getElementsByTagName('label')[1].innerHTML='Enter your email address!';
-        
-        console.log(value.value);
-        //createImage(value);
-        showResortImage(value.value);
+                document.getElementsByTagName('form')[1].appendChild(brake);
+
+                document.getElementsByTagName('form')[1].appendChild(emailLabel);
+                document.getElementsByTagName('form')[1].appendChild(formEmail);
+
+                document.getElementsByTagName('form')[1].appendChild(brake2);
+
+                document.getElementsByTagName('form')[1].appendChild(submit);
+
+            var name = document.createTextNode('Enter your name!');
+            var email = document.createTextNode('Enter your email address!');
+            document.getElementsByTagName('label')[0].appendChild(name);
+            document.getElementsByTagName('label')[1].appendChild(email);
+            
+            //console.log(value.value);
+            //createImage(value);
+            showResortImage(value.value);
+        }
     }
 }
 function showImages(selection){
@@ -241,6 +289,7 @@ function undoMoveImagesLeft(){
 }
 
 function showResortImage(imge){
+    console.log('its called');
     var imag = document.createElement('img');
         imag.setAttribute('src', 'images/destinationimages/'+ imge + 'small.jpg');
         imag.setAttribute('alt', imge);
@@ -260,7 +309,7 @@ function showResortImage(imge){
 
     function moveDestImage(which){
         if(parseInt(imag.style.height) < 500){
-            console.log(parseInt(imag.style.height));
+            //console.log(parseInt(imag.style.height));
             imag.style.height=parseInt(imag.style.height)+10+'px';
             imag.style.width=parseInt(imag.style.height)+10+'px';
             imag.style.left=parseInt(imag.style.left)+10+'px';
